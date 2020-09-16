@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">HW1</string>
+    <string name="edit_message">Enter digits</string>
+    <string name="button_send">Sort</string>
+</resources>
