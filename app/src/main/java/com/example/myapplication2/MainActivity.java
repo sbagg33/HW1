@@ -33,10 +33,12 @@ public class MainActivity extends AppCompatActivity {
         TextView valuesText = findViewById(R.id.digitValueBoolText); //get view for value text view
         TextView sizeText = findViewById(R.id.sizeBoolText); //get view for value text view
         TextView sortedListText = findViewById(R.id.sortedListFinal); //get view for value text view
+        TextView iterationsText  = findViewById(R.id.iterationsText); //get view for output text view
+
 
 
         textView.setText(message); //set the text to show input text
-        textView.setVisibility(view.VISIBLE); // make text visible
+       // textView.setVisibility(view.VISIBLE); // make text visible
         System.out.println(message);
 
         numArray = (message.split("\\s")); //split input string by spaces
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(context, "Error: Please enter number values of 0-9 only", duration).show();
             valuesText.setText("False");
-            sortedListText.setVisibility(view.INVISIBLE); // make text visible
+            //sortedListText.setVisibility(view.INVISIBLE); // make text visible
         }
 
         //Check method return and update text for size checking 3-8
@@ -63,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
             sizeText.setText("False");
             sortedListText.setVisibility(view.INVISIBLE); // make text visible
         }
-        valuesText.setVisibility((view.VISIBLE));
-        sizeText.setVisibility((view.VISIBLE));
+        //valuesText.setVisibility((view.VISIBLE));
+        //sizeText.setVisibility((view.VISIBLE));
 
         //send success toast on valid input
         if(valueCheck(numArray) && sizeLimitCheck(numArray)){
@@ -76,12 +78,13 @@ public class MainActivity extends AppCompatActivity {
             {
                 numbersIntArray[i] = Integer.parseInt(numArray[i]); //changing type to int and adding to new array
             }
+            iterationsText.setVisibility(view.VISIBLE); // make text visible
             numbersIntArray = bubbleSort(numbersIntArray);
             System.out.println("Final answer below!");
             System.out.println(Arrays.toString(numbersIntArray));
             //print to screen
             sortedListText.setText(Arrays.toString(numbersIntArray)); //set the text to show input text
-            sortedListText.setVisibility(view.VISIBLE); // make text visible
+            //sortedListText.setVisibility(view.VISIBLE); // make text visible
         }
     }
 
@@ -115,19 +118,32 @@ public class MainActivity extends AppCompatActivity {
         //system.out.printf("Iteration %d: %s %n",swapNumber, Arrays.toString(arr)); //bring to front mobile
     }
 
-    public static int[] bubbleSort(int[] numbers){
+    public int[] bubbleSort(int[] numbers){
+        TextView iterationsText  = findViewById(R.id.iterationsText); //get view for output text view
+        iterationsText.setText("");
         //Print the unsorted array
         //System.out.printf("Unsorted array: %s%n", Arrays.toString(numbers));
         int sIndex = 0;
         int nValues = numbers.length;
         int eIndex = nValues - 1;
+        boolean firstLine = true;
 
         while (sIndex < eIndex){
-            for (int index = eIndex; index > sIndex; index--){
-                if (numbers[index] < numbers[index -1])
-                    swap(numbers, index, index - 1);
-                System.out.println(Arrays.toString(numbers));
+            iterationsText.append(Arrays.toString(numbers) + "\n");
+            if(firstLine == true){
+                firstLine = false;
+                iterationsText.append(Arrays.toString(numbers) + "\n");
             }
+            for (int index = eIndex; index > sIndex; index--){
+                if (numbers[index] < numbers[index -1]) {
+                    //iterationsText.append(Arrays.toString(numbers) + "\n");
+                    swap(numbers, index, index - 1);
+                }
+                System.out.println(Arrays.toString(numbers));
+                iterationsText.append(Arrays.toString(numbers) + "\n");
+            }
+            iterationsText.append("Iteration Ended \n\n");
+            firstLine = true;
             sIndex++;
         }
         //System.out.println(Arrays.toString((numbers)));
