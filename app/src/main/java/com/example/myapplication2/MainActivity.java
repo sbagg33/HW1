@@ -3,7 +3,16 @@ package com.example.myapplication2;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -127,27 +136,71 @@ public class MainActivity extends AppCompatActivity {
         int nValues = numbers.length;
         int eIndex = nValues - 1;
         boolean firstLine = true;
+        int curIteration = 0; //used for underlining first line of iteration
+        int indexSize = (numbers.length * 2) - 1;
+        //int curEndText = 12;
 
         while (sIndex < eIndex){
-            iterationsText.append(Arrays.toString(numbers) + "\n");
+
             if(firstLine == true){
                 firstLine = false;
-                iterationsText.append(Arrays.toString(numbers) + "\n");
+                String topLine = cleanLine(numbers);
+                //System.out.println(topLine);
+                SpannableString content = new SpannableString(topLine);
+                System.out.println(content);
+                content.setSpan(new UnderlineSpan(),curIteration,indexSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                System.out.println(curIteration);
+                System.out.println(indexSize);
+                curIteration = curIteration + 2;
+                //iterationsText.setText(fullIterationsText + "\n");
+                iterationsText.append(content);
+                iterationsText.append("\n");
+
+                //update values for next iteration
+                //curEndTextIndex = curEndTextIndex + numbers.length;
+                //break;
             }
+
+            String otherLine = cleanLine(numbers);
+            iterationsText.append(otherLine + "\n");
+
             for (int index = eIndex; index > sIndex; index--){
                 if (numbers[index] < numbers[index -1]) {
                     //iterationsText.append(Arrays.toString(numbers) + "\n");
                     swap(numbers, index, index - 1);
                 }
-                System.out.println(Arrays.toString(numbers));
-                iterationsText.append(Arrays.toString(numbers) + "\n");
+                //System.out.println(Arrays.toString(numbers));
+                String curLine = cleanLine(numbers);
+
+                iterationsText.append(curLine + "\n");
             }
-            iterationsText.append("Iteration Ended \n\n");
+            String endLine = "Iteration " + Integer.toString(curIteration) +" Ended";
+//            SpannableString myContent = new SpannableString(endLine);
+//            myContent.setSpan(new UnderlineSpan(), 0, endLine.length(),Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            iterationsText.append(endLine +"\n\n");
             firstLine = true;
             sIndex++;
+            //break;
         }
         //System.out.println(Arrays.toString((numbers)));
+        String finalLine = cleanLine(numbers);
+        SpannableString lastContent = new SpannableString(finalLine);
+        System.out.println(lastContent);
+        lastContent.setSpan(new ForegroundColorSpan(Color.RED),0,indexSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        lastContent.setSpan(new StyleSpan(Typeface.BOLD),0,indexSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        iterationsText.append("Sorted Array");
+        iterationsText.append("\n");
+        iterationsText.append(lastContent);
         return numbers;
         //System.out.println("Solution: %s", Arrays.toString(arr)); //bring to front mobile
+    }
+
+    public String cleanLine (int[] numbers) {
+        String curString = Arrays.toString(numbers)
+                .replace(",", "")
+                .replace("[", "")
+                .replace("]", "")
+                .trim();
+        return curString;
     }
 }
