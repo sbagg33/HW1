@@ -44,12 +44,11 @@ public class MainActivity extends AppCompatActivity {
         TextView sortedListText = findViewById(R.id.sortedListFinal); //get view for value text view
         TextView iterationsText  = findViewById(R.id.iterationsText); //get view for output text view
 
-        sortedListText.setVisibility(view.INVISIBLE); // make text visible
+        iterationsText.setVisibility(view.INVISIBLE); // Make Iteration scroll bar Invisible when starting after sort press
 
 
 
         textView.setText(message); //set the text to show input text
-       // textView.setVisibility(view.VISIBLE); // make text visible
         System.out.println(message);
 
         numArray = (message.split("\\s")); //split input string by spaces
@@ -76,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
             sizeText.setText("False");
             sortedListText.setVisibility(view.INVISIBLE); // make text visible
         }
-        //valuesText.setVisibility((view.VISIBLE));
-        //sizeText.setVisibility((view.VISIBLE));
 
         //send success toast on valid input
         if(valueCheck(numArray) && sizeLimitCheck(numArray)){
@@ -93,9 +90,7 @@ public class MainActivity extends AppCompatActivity {
             numbersIntArray = bubbleSort(numbersIntArray);
             System.out.println("Final answer below!");
             System.out.println(Arrays.toString(numbersIntArray));
-            //print to screen
             sortedListText.setText(Arrays.toString(numbersIntArray)); //set the text to show input text
-            //sortedListText.setVisibility(view.VISIBLE); // make text visible
         } else {
             sortedListText.setVisibility(view.INVISIBLE); // make text visible
         }
@@ -134,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
     public int[] bubbleSort(int[] numbers){
         TextView iterationsText  = findViewById(R.id.iterationsText); //get view for output text view
         iterationsText.setText("");
-        //Print the unsorted array
-        //System.out.printf("Unsorted array: %s%n", Arrays.toString(numbers));
         int sIndex = 0;
         int nValues = numbers.length;
         int eIndex = nValues - 1;
@@ -143,32 +136,31 @@ public class MainActivity extends AppCompatActivity {
         int curIteration = 0; //used for underlining first line of iteration
         int indexSize = (numbers.length * 2) - 1;
         int curIterationEndNumber = 1;
-        //int curEndText = 12;
 
         while (sIndex < eIndex){
 
              int rightIndex = indexSize;
              int leftIndex = indexSize - 3;
 
+             //if its the first row in an iteration
             if(firstLine == true){
                 firstLine = false;
                 String topLine = cleanLine(numbers);
 
                 SpannableString content = new SpannableString(topLine);
-
+                //add styles to top line
                 content.setSpan(new UnderlineSpan(),curIteration,indexSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 content.setSpan(new ForegroundColorSpan(Color.RED),0,curIteration, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                content.setSpan(new StyleSpan(Typeface.BOLD),0,curIteration, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
+                //display top row
                 curIteration = curIteration + 2;
-                //iterationsText.setText(fullIterationsText + "\n");
                 iterationsText.append(content);
                 iterationsText.append("\n");
 
-                //update values for next iteration
-                //curEndTextIndex = curEndTextIndex + numbers.length;
-                //break;
             }
 
+            //display and style 2nd row
             String otherLine = cleanLine(numbers);
             SpannableString secondLine = new SpannableString(otherLine);
             secondLine.setSpan(new UnderlineSpan(),leftIndex,rightIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -178,33 +170,32 @@ public class MainActivity extends AppCompatActivity {
             iterationsText.append(secondLine); //Second line
             iterationsText.append("\n");
 
-
+            // go through bubble sort algorithm
             for (int index = eIndex; index > sIndex; index--){
                 if (numbers[index] < numbers[index -1]) {
                     //iterationsText.append(Arrays.toString(numbers) + "\n");
                     swap(numbers, index, index - 1);
                 }
-                //System.out.println(Arrays.toString(numbers));
                 rightIndex = leftIndex + 1;
-                //System.out.println(rightIndex);
                 leftIndex = leftIndex -2;
-                //System.out.println(leftIndex);
 
                 String curLine = cleanLine(numbers);
                 SpannableString middleLines = new SpannableString(curLine);
-                System.out.println(index);
+
+                //add underline and black bold font
                 if(leftIndex >= 0) {
                     middleLines.setSpan(new UnderlineSpan(), leftIndex, rightIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     middleLines.setSpan(new ForegroundColorSpan(Color.BLACK),rightIndex-1,rightIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     middleLines.setSpan(new StyleSpan(Typeface.BOLD),rightIndex-1,rightIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
 
+                //if it's the last Line in the iteration style red and bold  for sorted part
                 if(curIterationEndNumber > 1 && curIterationEndNumber == index) {
                     middleLines.setSpan(new ForegroundColorSpan(Color.RED), 0, rightIndex-2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     middleLines.setSpan(new StyleSpan(Typeface.BOLD), 0, rightIndex-2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 }
 
-                //bold last row number
+                //bold last row number for each iteration
                 if(curIterationEndNumber == 1 && leftIndex < 0){
                     middleLines.setSpan(new ForegroundColorSpan(Color.BLACK),0,1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     middleLines.setSpan(new StyleSpan(Typeface.BOLD),0,1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -214,18 +205,19 @@ public class MainActivity extends AppCompatActivity {
                 iterationsText.append("\n");
 
             }
+
+            //add iteration number after every iteration
             String endLine = "Iteration "+ curIterationEndNumber +" Ended";
             curIterationEndNumber++;
             System.out.println(curIterationEndNumber);
             iterationsText.append(endLine +"\n\n");
             firstLine = true;
             sIndex++;
-            //break;
         }
-        //System.out.println(Arrays.toString((numbers)));
+
+        //show final sorted array in bold Red
         String finalLine = cleanLine(numbers);
         SpannableString lastContent = new SpannableString(finalLine);
-        //System.out.println(lastContent);
         lastContent.setSpan(new ForegroundColorSpan(Color.RED),0,indexSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         lastContent.setSpan(new StyleSpan(Typeface.BOLD),0,indexSize, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         iterationsText.append("Sorted Array");
@@ -235,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
         //System.out.println("Solution: %s", Arrays.toString(arr)); //bring to front mobile
     }
 
+    //helper function to transform array to strings from ints
     public String cleanLine (int[] numbers) {
         String curString = Arrays.toString(numbers)
                 .replace(",", "")
