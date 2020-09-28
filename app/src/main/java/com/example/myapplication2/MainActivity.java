@@ -32,6 +32,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void quit ( View view){
+        setContentView(R.layout.activity_main);
+    }
+
+    public void congrats ( View view){
+        setContentView(R.layout.activity_main);
+
+        TextView sortedListLab = findViewById(R.id.sortedListLabel); //get view for value text view
+        TextView sortedListText = findViewById(R.id.sortedListFinal); //get view for value text view
+        TextView iterationsText  = findViewById(R.id.iterationsText); //get view for output text view
+
+        sortedListText.setText(Arrays.toString(numbersIntArray)); //set the text to show input text
+        iterationsText.setVisibility(view.INVISIBLE);
+        sortedListText.setVisibility(view.VISIBLE);
+    }
     //called when the user taps the send button
     public void sendMessage( View view) {
 
@@ -41,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = findViewById(R.id.textView2); //get view for output text view
         TextView valuesText = findViewById(R.id.digitValueBoolText); //get view for value text view
         TextView sizeText = findViewById(R.id.sizeBoolText); //get view for value text view
+        TextView sortedListLab = findViewById(R.id.sortedListLabel); //get view for value text view
         TextView sortedListText = findViewById(R.id.sortedListFinal); //get view for value text view
         TextView iterationsText  = findViewById(R.id.iterationsText); //get view for output text view
 
@@ -64,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(context, "Error: Please enter number values of 0-9 only", duration).show();
             valuesText.setText("False");
+            sortedListLab.setVisibility(view.INVISIBLE);
             sortedListText.setVisibility(view.INVISIBLE); // make text visible
         }
 
@@ -73,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(context, "Error: Please enter 3 to 8 digits, no more no less", duration).show();
             sizeText.setText("False");
+            sortedListLab.setVisibility(view.INVISIBLE);
             sortedListText.setVisibility(view.INVISIBLE); // make text visible
         }
 
@@ -90,8 +108,11 @@ public class MainActivity extends AppCompatActivity {
             numbersIntArray = bubbleSort(numbersIntArray);
             System.out.println("Final answer below!");
             System.out.println(Arrays.toString(numbersIntArray));
+            //sortedListLab.setVisibility(view.VISIBLE);
             sortedListText.setText(Arrays.toString(numbersIntArray)); //set the text to show input text
+            sortedListText.setVisibility(view.VISIBLE);
         } else {
+            sortedListLab.setVisibility(view.INVISIBLE);
             sortedListText.setVisibility(view.INVISIBLE); // make text visible
         }
     }
