@@ -32,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    public void quit ( View view){
+        //setContentView(R.layout.activity_main);
+        finishAffinity();
+        System.exit(0);
+    }
+
     //called when the user taps the send button
     public void sendMessage( View view) {
 
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         //send success toast on valid input
         if(valueCheck(numArray) && sizeLimitCheck(numArray)){
-            Toast.makeText(context, "Valid Input", duration).show(); //valid input toast
+            Toast.makeText(context, "Congratulations! Valid Input", duration).show(); //valid input toast
 
             //make string array into int array
             numbersIntArray = new int[numArray.length]; //integera array
